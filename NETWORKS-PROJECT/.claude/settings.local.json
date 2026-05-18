@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(python3 -c \"import triton_gui.node\")",
+      "Bash(python3 -m py_compile triton_gui/node.py)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(python3:*)",
+      "Bash(grep -E \"\\\\.html$\")",
+      "Bash(rm /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/templates/_sec_telemetry.html /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/templates/_sec_graphs.html /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/templates/_sec_diagnostics.html /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/templates/_sec_config.html /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/templates/_sec_ssh.html /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/templates/_sec_stereo.html /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/templates/_sec_tasks.html /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/templates/_sec_cameras.html /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/templates/_sec_firmware.html)",
+      "Bash(rm /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/static/js/system_telemetry.js /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/static/js/graphs.js /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/static/js/diagnostics.js /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/static/js/configuration.js /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/static/js/ssh_terminal.js /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/static/js/stereo.js /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/static/js/tasks.js /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/static/js/cameras.js /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/static/js/firmware.js)",
+      "Bash(rm /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/static/css/diagnostics.css /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/static/css/firmware.css /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/static/css/graphs.css /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/static/css/configuration.css /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/static/css/stereo.css /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/static/css/tasks.css /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/static/css/xterm.css)",
+      "Bash(rm /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/static/js/vendor/xterm.js /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/static/js/vendor/addon-fit.js /home/joe/Development/equinox_message_playground/src/triton_gui/triton_gui/app/static/js/vendor/chart.min.js)"
+    ]
+  }
+}

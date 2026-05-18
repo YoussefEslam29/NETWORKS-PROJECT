@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Block Viewer</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0e0f11;
+    color: #e8eaf0;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  #canvas-container {
+    flex: 1;
+    position: relative;
+  }
+
+  #canvas-container canvas { display: block; }
+
+  /* CSS2D labels */
+  .dim-label {
+    background: rgba(14,15,17,0.82);
+    color: #4ef0a0;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #2a2d35;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .dim-label.fixed {
+    color: #f0a04e;
+  }
+
+  /* Side panel */
+  #panel {
+    width: 260px;
+    background: #16181c;
+    border-left: 1px solid #2a2d35;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+
+  .panel-header {
+    padding: 16px;
+    border-bottom: 1px solid #2a2d35;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #6b7280;
+  }
+
+  .block-section {
+    padding: 14px 16px;
+    border-bottom: 1px solid #2a2d35;
+  }
+
+  .block-title {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .color-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .ctrl {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: #9ca3af;
+  }
+
+  .ctrl label { width: 54px; flex-shrink: 0; }
+
+  .ctrl input[type=range] {
+    flex: 1;
+    accent-color: #4ef0a0;
+  }
+
+  .ctrl .val {
+    width: 36px;
+    text-align: right;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: #e8eaf0;
+  }
+
+  .fixed-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: #6b7280;
+  }
+  .fixed-row label { width: 54px; flex-shrink: 0; }
+  .fixed-row .val {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: #f0a04e;
+  }
+  .fixed-tag {
+    font-size: 9px;
+    background: #2a2200;
+    color: #f0a04e;
+    border: 1px solid #4a3800;
+    border-radius: 3px;
+    padding: 1px 4px;
+    margin-left: auto;
+  }
+
+  .legend {
+    padding: 14px 16px;
+    font-size: 11px;
+    color: #6b7280;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .legend-row { display: flex; align-items: center; gap: 6px; }
+  .leg-swatch { width: 20px; height: 2px; border-radius: 1px; }
+</style>
+</head>
+<body>
+
+<div id="canvas-container"></div>
+
+<div id="panel">
+  <div class="panel-header">Dimensions (cm)</div>
+
+  <!-- Block A -->
+  <div class="block-section">
+    <div class="block-title">
+      <span class="color-dot" style="background:#378ADD"></span>
+      Block A
+    </div>
+    <div class="fixed-row">
+      <label>Height</label>
+      <span class="val">15</span> cm
+      <span class="fixed-tag">FIXED</span>
+    </div>
+    <div class="fixed-row">
+      <label>Depth</label>
+      <span class="val">30</span> cm
+      <span class="fixed-tag">FIXED</span>
+    </div>
+    <div class="ctrl">
+      <label>Width</label>
+      <input type="range" id="aW" min="5" max="80" value="30" step="1">
+      <span class="val" id="aW-v">30</span>
+    </div>
+  </div>
+
+  <!-- Block B -->
+  <div class="block-section">
+    <div class="block-title">
+      <span class="color-dot" style="background:#1D9E75"></span>
+      Block B
+    </div>
+    <div class="fixed-row">
+      <label>Width</label>
+      <span class="val">45</span> cm
+      <span class="fixed-tag">FIXED</span>
+    </div>
+    <div class="fixed-row">
+      <label>Depth</label>
+      <span class="val">30</span> cm
+      <span class="fixed-tag">FIXED</span>
+    </div>
+    <div class="ctrl">
+      <label>Height</label>
+      <input type="range" id="bH" min="5" max="100" value="40" step="1">
+      <span class="val" id="bH-v">40</span>
+    </div>
+  </div>
+
+  <!-- Block C -->
+  <div class="block-section">
+    <div class="block-title">
+      <span class="color-dot" style="background:#D85A30"></span>
+      Block C
+    </div>
+    <div class="fixed-row">
+      <label>Height</label>
+      <span class="val">25</span> cm
+      <span class="fixed-tag">FIXED</span>
+    </div>
+    <div class="fixed-row">
+      <label>Depth</label>
+      <span class="val">30</span> cm
+      <span class="fixed-tag">FIXED</span>
+    </div>
+    <div class="ctrl">
+      <label>Width</label>
+      <input type="range" id="cW" min="5" max="80" value="30" step="1">
+      <span class="val" id="cW-v">30</span>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div style="font-size:11px;color:#4b5563;margin-bottom:2px;text-transform:uppercase;letter-spacing:.08em">Labels</div>
+    <div class="legend-row"><span class="leg-swatch" style="background:#4ef0a0"></span> Variable dimension</div>
+    <div class="legend-row"><span class="leg-swatch" style="background:#f0a04e"></span> Fixed dimension</div>
+    <div style="margin-top:8px;color:#4b5563;font-size:10px;">Drag to orbit · Scroll to zoom</div>
+  </div>
+</div>
+
+<!-- Three.js + CSS2DRenderer -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ─── CSS2DRenderer (inlined since r128 doesn't bundle it) ───────────────────
+(function(){
+  THREE.CSS2DObject = function(el){
+    THREE.Object3D.call(this);
+    this.element = el;
+    el.style.position = 'absolute';
+    this.addEventListener('removed', function(){ if(this.element.parentNode) this.element.parentNode.removeChild(this.element); });
+  };
+  THREE.CSS2DObject.prototype = Object.assign(Object.create(THREE.Object3D.prototype), {
+    constructor: THREE.CSS2DObject,
+    copy: function(src, rec){ THREE.Object3D.prototype.copy.call(this,src,rec); this.element=src.element.cloneNode(true); return this; }
+  });
+
+  THREE.CSS2DRenderer = function(){
+    var _w, _h, _hW, _hH;
+    var cache = { objects: new WeakMap() };
+    var domEl = document.createElement('div');
+    domEl.style.cssText = 'overflow:hidden;position:absolute;top:0;left:0;pointer-events:none;';
+    this.domElement = domEl;
+
+    this.setSize = function(w, h){
+      _w=w; _h=h; _hW=w/2; _hH=h/2;
+      domEl.style.width=w+'px'; domEl.style.height=h+'px';
+    };
+
+    var vec = new THREE.Vector3();
+    function getPos(obj, camera){
+      vec.setFromMatrixPosition(obj.matrixWorld);
+      vec.project(camera);
+      return { x: vec.x*_hW+_hW, y: -vec.y*_hH+_hH };
+    }
+
+    this.render = function(scene, camera){
+      scene.updateMatrixWorld();
+      var objs = [];
+      scene.traverse(function(o){ if(o instanceof THREE.CSS2DObject) objs.push(o); });
+      objs.forEach(function(obj){
+        var p = getPos(obj, camera);
+        var el = obj.element;
+        el.style.transform = 'translate(-50%,-50%) translate('+Math.round(p.x)+'px,'+Math.round(p.y)+'px)';
+        if(!el.parentNode) domEl.appendChild(el);
+      });
+    };
+  };
+})();
+
+// ─── Constants ───────────────────────────────────────────────────────────────
+const DEPTH   = 30;   // fixed for all blocks
+const A_H     = 15;   // fixed
+const C_H     = 25;   // fixed
+const B_W     = 45;   // fixed
+
+// ─── Mutable (from sliders) ──────────────────────────────────────────────────
+let A_W = 30;
+let B_H = 40;
+let C_W = 30;
+
+// ─── Scene setup ─────────────────────────────────────────────────────────────
+const container = document.getElementById('canvas-container');
+const W = () => container.clientWidth;
+const H = () => container.clientHeight;
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(devicePixelRatio);
+renderer.setSize(W(), H());
+renderer.shadowMap.enabled = true;
+renderer.setClearColor(0x0e0f11);
+container.appendChild(renderer.domElement);
+
+const labelRenderer = new THREE.CSS2DRenderer();
+labelRenderer.setSize(W(), H());
+container.appendChild(labelRenderer.domElement);
+
+const scene = new THREE.Scene();
+
+const camera = new THREE.PerspectiveCamera(45, W()/H(), 0.1, 2000);
+camera.position.set(80, 80, 160);
+camera.lookAt(50, 20, 0);
+
+// Lights
+scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+const sun = new THREE.DirectionalLight(0xffffff, 0.9);
+sun.position.set(100, 150, 100);
+sun.castShadow = true;
+scene.add(sun);
+const fill = new THREE.DirectionalLight(0x8888ff, 0.3);
+fill.position.set(-80, 40, -60);
+scene.add(fill);
+
+// Grid
+const grid = new THREE.GridHelper(400, 40, 0x2a2d35, 0x1e2026);
+scene.add(grid);
+
+// ─── Orbit controls (minimal inline) ─────────────────────────────────────────
+let isDragging = false, prevX = 0, prevY = 0;
+let theta = 0.4, phi = 1.1, radius = 180;
+let target = new THREE.Vector3(50, 20, 0);
+
+function updateCamera(){
+  camera.position.set(
+    target.x + radius * Math.sin(phi) * Math.sin(theta),
+    target.y + radius * Math.cos(phi),
+    target.z + radius * Math.sin(phi) * Math.cos(theta)
+  );
+  camera.lookAt(target);
+}
+updateCamera();
+
+renderer.domElement.addEventListener('mousedown', e => { isDragging=true; prevX=e.clientX; prevY=e.clientY; });
+window.addEventListener('mouseup', () => isDragging=false);
+window.addEventListener('mousemove', e => {
+  if(!isDragging) return;
+  theta -= (e.clientX-prevX)*0.01;
+  phi = Math.max(0.1, Math.min(Math.PI-0.1, phi-(e.clientY-prevY)*0.01));
+  prevX=e.clientX; prevY=e.clientY;
+  updateCamera();
+});
+renderer.domElement.addEventListener('wheel', e => {
+  radius = Math.max(40, Math.min(500, radius+e.deltaY*0.3));
+  updateCamera();
+  e.preventDefault();
+}, { passive:false });
+
+// Touch orbit
+let lastTouch = null;
+renderer.domElement.addEventListener('touchstart', e => { lastTouch = e.touches[0]; });
+renderer.domElement.addEventListener('touchmove', e => {
+  if(!lastTouch) return;
+  const t = e.touches[0];
+  theta -= (t.clientX-lastTouch.clientX)*0.012;
+  phi = Math.max(0.1, Math.min(Math.PI-0.1, phi-(t.clientY-lastTouch.clientY)*0.012));
+  lastTouch = t;
+  updateCamera();
+  e.preventDefault();
+}, { passive:false });
+
+// ─── Block materials ─────────────────────────────────────────────────────────
+const MATS = [
+  new THREE.MeshStandardMaterial({ color:0x378ADD, roughness:.45, metalness:.1 }),
+  new THREE.MeshStandardMaterial({ color:0x1D9E75, roughness:.45, metalness:.1 }),
+  new THREE.MeshStandardMaterial({ color:0xD85A30, roughness:.45, metalness:.1 }),
+];
+const EDGE_COLORS = [0x85B7EB, 0x5DCAA5, 0xF0997B];
+
+// ─── Label helpers ────────────────────────────────────────────────────────────
+function makeLabel(text, isFixed){
+  const div = document.createElement('div');
+  div.className = 'dim-label' + (isFixed ? ' fixed' : '');
+  div.textContent = text;
+  return new THREE.CSS2DObject(div);
+}
+
+// ─── Scene objects (rebuilt on each update) ──────────────────────────────────
+let blockGroup = new THREE.Group();
+scene.add(blockGroup);
+
+function buildScene(){
+  // clear previous
+  while(blockGroup.children.length) blockGroup.remove(blockGroup.children[0]);
+
+  const blocks = [
+    { w: A_W, h: A_H, d: DEPTH, fixedW:false, fixedH:true,  fixedD:true },
+    { w: B_W, h: B_H, d: DEPTH, fixedW:true,  fixedH:false, fixedD:true },
+    { w: C_W, h: C_H, d: DEPTH, fixedW:false, fixedH:true,  fixedD:true },
+  ];
+
+  let xCursor = 0;
+
+  blocks.forEach((b, i) => {
+    const geo = new THREE.BoxGeometry(b.w, b.h, b.d);
+    const mesh = new THREE.Mesh(geo, MATS[i]);
+    mesh.position.set(xCursor + b.w/2, b.h/2, 0);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    blockGroup.add(mesh);
+
+    // Edges
+    const edges = new THREE.LineSegments(
+      new THREE.EdgesGeometry(geo),
+      new THREE.LineBasicMaterial({ color: EDGE_COLORS[i], linewidth: 1 })
+    );
+    edges.position.copy(mesh.position);
+    blockGroup.add(edges);
+
+    const cx = xCursor + b.w/2;
+    const top = b.h;
+    const front = b.d/2;
+
+    // Width label — front bottom
+    const wLabel = makeLabel(b.w+'cm', b.fixedW);
+    wLabel.position.set(cx, 0, front + 4);
+    blockGroup.add(wLabel);
+
+    // Height label — right side middle
+    const hLabel = makeLabel(b.h+'cm', b.fixedH);
+    hLabel.position.set(xCursor + b.w + 4, b.h/2, 0);
+    blockGroup.add(hLabel);
+
+    // Depth label — top right corner
+    const dLabel = makeLabel(b.d+'cm', b.fixedD);
+    dLabel.position.set(xCursor + b.w + 4, top + 3, b.d/2);
+    blockGroup.add(dLabel);
+
+    xCursor += b.w;
+  });
+
+  // Re-center orbit target
+  target.set(xCursor/2, 20, 0);
+  updateCamera();
+}
+
+buildScene();
+
+// ─── Sliders ──────────────────────────────────────────────────────────────────
+function bindSlider(id, cb){
+  const inp = document.getElementById(id);
+  const out = document.getElementById(id+'-v');
+  inp.addEventListener('input', () => {
+    out.textContent = inp.value;
+    cb(+inp.value);
+    buildScene();
+  });
+}
+
+bindSlider('aW', v => A_W = v);
+bindSlider('bH', v => B_H = v);
+bindSlider('cW', v => C_W = v);
+
+// ─── Resize ───────────────────────────────────────────────────────────────────
+window.addEventListener('resize', () => {
+  camera.aspect = W()/H();
+  camera.updateProjectionMatrix();
+  renderer.setSize(W(), H());
+  labelRenderer.setSize(W(), H());
+});
+
+// ─── Render loop ─────────────────────────────────────────────────────────────
+function animate(){
+  requestAnimationFrame(animate);
+  renderer.render(scene, camera);
+  labelRenderer.render(scene, camera);
+}
+animate();
+</script>
+</body>
+</html>

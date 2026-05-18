@@ -1,0 +1,325 @@
+/* ── Two-column layout ── */
+.gp-columns {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 16px;
+    align-items: start;
+}
+@media (max-width: 760px) { .gp-columns { grid-template-columns: 1fr; } }
+/* panels inside the grid don't need vertical margin */
+.gp-columns .panel { margin-bottom: 0; }
+
+/* ── Motion output bars ── */
+.motion-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .8rem;
+}
+.motion-table td { padding: 3px 6px; vertical-align: middle; }
+.motion-label { color: var(--cohere-ink); width: 52px; font-weight: 500; font-family: CohereMono, Arial, ui-sans-serif, system-ui; font-size: 11px; }
+.motion-val   { width: 54px; text-align: right; font-variant-numeric: tabular-nums; color: var(--cohere-muted); font-family: CohereMono, Arial, ui-sans-serif, system-ui; font-size: 11px; }
+.motion-bar-wrap {
+    position: relative;
+    height: 10px;
+    background: var(--cohere-border);
+    border-radius: var(--r-xs);
+    overflow: hidden;
+}
+.motion-bar-fill {
+    position: absolute;
+    top: 0; height: 100%;
+    background: var(--cohere-action-blue);
+    transition: left .05s, width .05s;
+}
+.motion-bar-fill.negative { background: var(--cohere-coral); }
+.motion-bar-center {
+    position: absolute;
+    left: 50%; top: 0;
+    width: 1px; height: 100%;
+    background: var(--cohere-hairline);
+}
+
+/* ── Raw axis table ── */
+.axis-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .75rem;
+}
+.axis-table th {
+    text-align: left;
+    color: var(--cohere-muted);
+    font-weight: 500;
+    font-family: CohereMono, Arial, ui-sans-serif, system-ui;
+    font-size: 10px;
+    letter-spacing: 0.28px;
+    padding: 3px 5px;
+    border-bottom: 1px solid var(--cohere-hairline);
+}
+.axis-table td { padding: 2px 5px; color: var(--cohere-ink); font-size: 11px; }
+.axis-idx { color: var(--cohere-muted); width: 24px; }
+.axis-raw-val { width: 56px; text-align: right; font-variant-numeric: tabular-nums; font-family: CohereMono, Arial, ui-sans-serif, system-ui; }
+.axis-bar-wrap {
+    position: relative;
+    height: 8px;
+    background: var(--cohere-border);
+    border-radius: var(--r-xs);
+    overflow: hidden;
+    min-width: 60px;
+}
+.axis-bar-fill {
+    position: absolute;
+    top: 0; height: 100%;
+    background: var(--cohere-action-blue);
+    opacity: 0.7;
+}
+.axis-bar-center {
+    position: absolute;
+    left: 50%; top: 0;
+    width: 1px; height: 100%;
+    background: var(--cohere-hairline);
+}
+
+/* ── Button grid ── */
+.btn-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+.btn-cell {
+    width: 34px; height: 34px;
+    border-radius: var(--r-xs);
+    border: 1px solid var(--cohere-hairline);
+    background: var(--cohere-border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: .72rem;
+    color: var(--cohere-muted);
+    transition: background .05s, color .05s, border-color .05s;
+    user-select: none;
+}
+.btn-cell.pressed {
+    background: var(--cohere-deep-green);
+    border-color: var(--cohere-deep-green);
+    color: #fff;
+}
+
+/* ── Mapping form ── */
+.mapping-top-bar {
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.mapping-top-bar .spacer { flex: 1; }
+.mapping-status {
+    font-size: .76rem;
+    min-height: 1.3em;
+}
+.mapping-status.ok    { color: var(--green); }
+.mapping-status.error { color: var(--red); }
+.mapping-status.info  { color: var(--yellow); }
+
+label.field-label {
+    font-family: CohereMono, Arial, ui-sans-serif, system-ui;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.28px;
+    text-transform: uppercase;
+    color: var(--cohere-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+input.deadzone-input {
+    width: 58px;
+    background: var(--cohere-canvas);
+    border: 1px solid var(--cohere-hairline);
+    color: var(--cohere-ink);
+    border-radius: var(--r-xs);
+    padding: 3px 6px;
+    font-size: .78rem;
+    font-family: CohereMono, Arial, ui-sans-serif, system-ui;
+}
+
+.mapping-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .78rem;
+}
+.mapping-table th {
+    text-align: left;
+    color: var(--cohere-muted);
+    font-family: CohereMono, Arial, ui-sans-serif, system-ui;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.28px;
+    text-transform: uppercase;
+    padding: 4px 6px;
+    border-bottom: 1px solid var(--cohere-hairline);
+}
+.mapping-table td { padding: 3px 6px; vertical-align: middle; color: var(--cohere-ink); }
+.mapping-table tr:hover td { background: rgba(0,0,0,.03); }
+.action-name { color: var(--cohere-slate); white-space: nowrap; font-size: .78rem; }
+
+/* ── Shared select/dropdown style ── */
+.mapping-table select,
+select.source-select,
+select.btn-src-select,
+select.btn-direction-select {
+    background: var(--cohere-canvas);
+    border: 1px solid var(--cohere-hairline);
+    color: var(--cohere-ink);
+    border-radius: var(--r-xs);
+    padding: 3px 5px;
+    font-size: .75rem;
+    cursor: pointer;
+}
+.mapping-table select:focus,
+select.source-select:focus,
+select.btn-src-select:focus,
+select.btn-direction-select:focus { outline: none; border-color: #9b60aa; }
+
+.mapping-table input[type="number"] {
+    width: 44px;
+    background: var(--cohere-canvas);
+    border: 1px solid var(--cohere-hairline);
+    color: var(--cohere-ink);
+    border-radius: var(--r-xs);
+    padding: 3px 5px;
+    font-size: .75rem;
+    text-align: center;
+    font-family: CohereMono, Arial, ui-sans-serif, system-ui;
+}
+.mapping-table input[type="number"]:focus { outline: none; border-color: #9b60aa; }
+.mapping-table input[type="checkbox"] {
+    accent-color: var(--cohere-action-blue);
+    width: 14px; height: 14px;
+    cursor: pointer;
+}
+
+/* ── Axis source show/hide ── */
+.src-axis  { display: inline-flex; align-items: center; gap: 4px; }
+.src-btns  { display: inline-flex; align-items: center; gap: 4px; }
+tr[data-source="axis"]    .src-btns { display: none; }
+tr[data-source="buttons"] .src-axis { display: none; }
+
+/* ── Button-as-axis source show/hide ── */
+.bsrc-btn  { display: inline-flex; align-items: center; gap: 4px; }
+.bsrc-axis { display: inline-flex; align-items: center; gap: 4px; }
+tr[data-btn-source="button"] .bsrc-axis { display: none; }
+tr[data-btn-source="axis"]   .bsrc-btn  { display: none; }
+.btn-threshold-input { width: 44px; }
+
+/* ── Learn button ── */
+.learn-btn {
+    padding: 2px 8px;
+    font-size: .68rem;
+    font-weight: 500;
+    background: transparent;
+    border: 1px solid var(--cohere-hairline);
+    color: var(--cohere-muted);
+    border-radius: var(--r-xs);
+    cursor: pointer;
+    transition: border-color .12s, color .12s, background .12s;
+}
+.learn-btn:hover { border-color: var(--cohere-action-blue); color: var(--cohere-action-blue); }
+tr.learning td   { background: rgba(37,99,235,.07); }
+tr.learning .learn-btn.active { border-color: var(--cohere-action-blue); color: var(--cohere-action-blue); background: rgba(37,99,235,.1); }
+
+/* ── Active action chips ── */
+.active-actions-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: center;
+}
+.action-chip {
+    padding: 2px 10px;
+    border-radius: var(--r-pill);
+    border: 1px solid var(--cohere-hairline);
+    background: var(--cohere-border);
+    color: var(--cohere-muted);
+    font-family: CohereMono, Arial, ui-sans-serif, system-ui;
+    font-size: .72rem;
+    font-weight: 500;
+    letter-spacing: 0.28px;
+    transition: background .06s, border-color .06s, color .06s;
+    user-select: none;
+}
+.action-chip.axis-chip.active {
+    border-color: rgba(37, 99, 235, 0.35);
+    background: rgba(37, 99, 235, 0.12);
+    color: var(--cohere-action-blue);
+}
+.action-chip.btn-chip.active {
+    border-color: rgba(0, 188, 127, 0.35);
+    background: rgba(0, 188, 127, 0.12);
+    color: var(--cohere-deep-green);
+}
+.action-chip-sep {
+    width: 1px;
+    height: 20px;
+    background: var(--cohere-hairline);
+    flex-shrink: 0;
+}
+
+/* ── Keyboard binding table ── */
+.key-badge {
+    display: inline-block;
+    font-family: CohereMono, Arial, ui-sans-serif, system-ui;
+    font-size: .75rem;
+    background: var(--cohere-canvas);
+    border: 1px solid var(--cohere-hairline);
+    border-radius: var(--r-xs);
+    padding: 2px 6px;
+    color: var(--cohere-slate);
+    min-width: 36px;
+    text-align: center;
+    vertical-align: middle;
+}
+.kbd-row.learning-key td             { background: rgba(245, 158, 11, .06); }
+.kbd-row.learning-key .kbd-key-learn { border-color: var(--yellow); color: var(--yellow); }
+.kbd-value-cell input { width: 52px; }
+.kbd-table select,
+.kbd-table input[type="number"] {
+    background: var(--cohere-canvas);
+    border: 1px solid var(--cohere-hairline);
+    color: var(--cohere-ink);
+    border-radius: var(--r-xs);
+    padding: 3px 5px;
+    font-size: .75rem;
+}
+.kbd-table select:focus,
+.kbd-table input[type="number"]:focus { outline: none; border-color: #9b60aa; }
+
+/* ── Device info ── */
+.device-info {
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: .76rem;
+    color: var(--cohere-ink);
+}
+.device-info .device-id {
+    font-family: CohereMono, Arial, ui-sans-serif, system-ui;
+    font-size: .72rem;
+    color: var(--cohere-slate);
+    background: var(--cohere-canvas);
+    border: 1px solid var(--cohere-hairline);
+    border-radius: var(--r-xs);
+    padding: 3px 7px;
+    user-select: all;
+}
+.device-info input[type="text"] {
+    background: var(--cohere-canvas);
+    border: 1px solid var(--cohere-hairline);
+    color: var(--cohere-ink);
+    border-radius: var(--r-xs);
+    padding: 3px 7px;
+    font-size: .76rem;
+    width: 160px;
+}
+.device-info input[type="text"]:focus { outline: none; border-color: #9b60aa; }
+.device-info label { color: var(--cohere-muted); font-family: CohereMono, Arial, ui-sans-serif, system-ui; font-size: 10px; letter-spacing: 0.28px; text-transform: uppercase; }

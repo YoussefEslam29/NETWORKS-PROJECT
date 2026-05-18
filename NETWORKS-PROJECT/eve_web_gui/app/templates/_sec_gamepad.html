@@ -1,0 +1,228 @@
+<div class="dash-section-header">
+    <h2>Gamepad</h2>
+    <div id="gp-status-banner" class="status-pill disconnected">
+        <span class="status-dot"></span>
+        <span id="gp-status-name">No controller connected</span>
+    </div>
+</div>
+
+<!-- Device identity -->
+<div class="device-info">
+    <label>Device ID:</label>
+    <span class="device-id" id="device-id-display" title="Unique ID for this browser on this machine">—</span>
+    <label>Profile:</label>
+    <select id="profile-select"></select>
+    <button type="button" class="action-btn" id="profile-new" title="Create new profile">+ New</button>
+    <button type="button" class="action-btn danger" id="profile-delete" title="Delete current profile">Delete</button>
+</div>
+
+<div class="gp-columns">
+
+    <!-- ── Left: Live diagnostics ── -->
+    <div class="panel">
+        <div class="panel-title">Live Diagnostics</div>
+
+        <!-- Motion output (EVE: 2 axes) -->
+        <div>
+            <div class="sub-title">Motion Output</div>
+            <table class="motion-table">
+                <tbody id="motion-table-body">
+                    <tr data-motion="forward">
+                        <td class="motion-label">Forward</td>
+                        <td><div class="motion-bar-wrap">
+                            <div class="motion-bar-fill" id="motion-bar-forward"></div>
+                            <div class="motion-bar-center"></div>
+                        </div></td>
+                        <td class="motion-val" id="motion-val-forward">0.0000</td>
+                    </tr>
+                    <tr data-motion="turn">
+                        <td class="motion-label">Turn</td>
+                        <td><div class="motion-bar-wrap">
+                            <div class="motion-bar-fill" id="motion-bar-turn"></div>
+                            <div class="motion-bar-center"></div>
+                        </div></td>
+                        <td class="motion-val" id="motion-val-turn">0.0000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Active commands -->
+        <div>
+            <div class="sub-title">Active Commands</div>
+            <div class="active-actions-wrap" id="active-actions"></div>
+        </div>
+
+        <!-- Raw axes -->
+        <div>
+            <div class="sub-title">Raw Axes</div>
+            <table class="axis-table">
+                <thead>
+                    <tr><th>#</th><th>Bar</th><th>Value</th></tr>
+                </thead>
+                <tbody id="axis-table-body"></tbody>
+            </table>
+        </div>
+
+        <!-- Buttons -->
+        <div>
+            <div class="sub-title">Buttons</div>
+            <div class="btn-grid" id="btn-grid"></div>
+        </div>
+    </div>
+
+    <!-- ── Right: Mapping editor ── -->
+    <div class="panel">
+        <div class="panel-title">Button Mapping</div>
+
+        <form id="mapping-form" autocomplete="off">
+
+            <div class="mapping-top-bar">
+                <label class="field-label">
+                    Deadzone
+                    <input type="number" id="deadzone-input" class="deadzone-input"
+                           min="0" max="1" step="0.01" value="0.1">
+                </label>
+                <span class="spacer"></span>
+                <div id="mapping-status" class="mapping-status"></div>
+            </div>
+
+            <!-- Axes (EVE: forward + turn only) -->
+            <div class="sub-title">Axes</div>
+            <table class="mapping-table">
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Source</th>
+                        <th>Config</th>
+                        <th>Inv</th>
+                        <th>Learn</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-axis-name="forward" data-source="axis">
+                        <td class="action-name">Forward</td>
+                        <td><select class="source-select">
+                            <option value="axis" selected>Axis</option>
+                            <option value="buttons">Buttons</option>
+                        </select></td>
+                        <td>
+                            <span class="src-axis"># <input type="number" class="axis-index-input" min="-1" max="31" value="1"></span>
+                            <span class="src-btns">
+                                + <input type="number" class="axis-pos-input" min="-1" max="31" value="-1">
+                                − <input type="number" class="axis-neg-input" min="-1" max="31" value="-1">
+                            </span>
+                        </td>
+                        <td><input type="checkbox" class="axis-invert-check" checked></td>
+                        <td>
+                            <span class="src-axis"><button type="button" class="learn-btn" data-learn="axis">Learn</button></span>
+                            <span class="src-btns">
+                                <button type="button" class="learn-btn" data-learn="btn-pos">+ Lrn</button>
+                                <button type="button" class="learn-btn" data-learn="btn-neg">− Lrn</button>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr data-axis-name="turn" data-source="axis">
+                        <td class="action-name">Turn</td>
+                        <td><select class="source-select">
+                            <option value="axis" selected>Axis</option>
+                            <option value="buttons">Buttons</option>
+                        </select></td>
+                        <td>
+                            <span class="src-axis"># <input type="number" class="axis-index-input" min="-1" max="31" value="2"></span>
+                            <span class="src-btns">
+                                + <input type="number" class="axis-pos-input" min="-1" max="31" value="-1">
+                                − <input type="number" class="axis-neg-input" min="-1" max="31" value="-1">
+                            </span>
+                        </td>
+                        <td><input type="checkbox" class="axis-invert-check"></td>
+                        <td>
+                            <span class="src-axis"><button type="button" class="learn-btn" data-learn="axis">Learn</button></span>
+                            <span class="src-btns">
+                                <button type="button" class="learn-btn" data-learn="btn-pos">+ Lrn</button>
+                                <button type="button" class="learn-btn" data-learn="btn-neg">− Lrn</button>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Buttons (voice taunts) -->
+            <div class="sub-title">Voice Taunt Buttons (PS Shape)</div>
+            <table class="mapping-table">
+                <thead>
+                    <tr><th>Action</th><th>Source</th><th>Config</th><th>Learn</th></tr>
+                </thead>
+                <tbody>
+                    <tr data-btn-name="cross" data-btn-source="button">
+                        <td class="action-name">Cross (✕)</td>
+                        <td><select class="btn-src-select"><option value="button" selected>Button</option><option value="axis">Axis</option></select></td>
+                        <td>
+                            <span class="bsrc-btn"><input type="number" class="btn-index-input" min="-1" max="31" value="0"></span>
+                            <span class="bsrc-axis"># <input type="number" class="btn-axis-index-input" min="-1" max="31" value="-1">
+                                &ge;<input type="number" class="btn-threshold-input" min="0" max="1" step="0.05" value="0.5">
+                                <select class="btn-direction-select"><option value="positive">+</option><option value="negative">−</option><option value="any">|v|</option></select>
+                            </span>
+                        </td>
+                        <td>
+                            <span class="bsrc-btn"><button type="button" class="learn-btn" data-learn="button">Learn</button></span>
+                            <span class="bsrc-axis"><button type="button" class="learn-btn" data-learn="btn-axis">Learn</button></span>
+                        </td>
+                    </tr>
+                    <tr data-btn-name="circle" data-btn-source="button">
+                        <td class="action-name">Circle (◯)</td>
+                        <td><select class="btn-src-select"><option value="button" selected>Button</option><option value="axis">Axis</option></select></td>
+                        <td>
+                            <span class="bsrc-btn"><input type="number" class="btn-index-input" min="-1" max="31" value="1"></span>
+                            <span class="bsrc-axis"># <input type="number" class="btn-axis-index-input" min="-1" max="31" value="-1">
+                                &ge;<input type="number" class="btn-threshold-input" min="0" max="1" step="0.05" value="0.5">
+                                <select class="btn-direction-select"><option value="positive">+</option><option value="negative">−</option><option value="any">|v|</option></select>
+                            </span>
+                        </td>
+                        <td>
+                            <span class="bsrc-btn"><button type="button" class="learn-btn" data-learn="button">Learn</button></span>
+                            <span class="bsrc-axis"><button type="button" class="learn-btn" data-learn="btn-axis">Learn</button></span>
+                        </td>
+                    </tr>
+                    <tr data-btn-name="square" data-btn-source="button">
+                        <td class="action-name">Square (◻)</td>
+                        <td><select class="btn-src-select"><option value="button" selected>Button</option><option value="axis">Axis</option></select></td>
+                        <td>
+                            <span class="bsrc-btn"><input type="number" class="btn-index-input" min="-1" max="31" value="2"></span>
+                            <span class="bsrc-axis"># <input type="number" class="btn-axis-index-input" min="-1" max="31" value="-1">
+                                &ge;<input type="number" class="btn-threshold-input" min="0" max="1" step="0.05" value="0.5">
+                                <select class="btn-direction-select"><option value="positive">+</option><option value="negative">−</option><option value="any">|v|</option></select>
+                            </span>
+                        </td>
+                        <td>
+                            <span class="bsrc-btn"><button type="button" class="learn-btn" data-learn="button">Learn</button></span>
+                            <span class="bsrc-axis"><button type="button" class="learn-btn" data-learn="btn-axis">Learn</button></span>
+                        </td>
+                    </tr>
+                    <tr data-btn-name="triangle" data-btn-source="button">
+                        <td class="action-name">Triangle (△)</td>
+                        <td><select class="btn-src-select"><option value="button" selected>Button</option><option value="axis">Axis</option></select></td>
+                        <td>
+                            <span class="bsrc-btn"><input type="number" class="btn-index-input" min="-1" max="31" value="3"></span>
+                            <span class="bsrc-axis"># <input type="number" class="btn-axis-index-input" min="-1" max="31" value="-1">
+                                &ge;<input type="number" class="btn-threshold-input" min="0" max="1" step="0.05" value="0.5">
+                                <select class="btn-direction-select"><option value="positive">+</option><option value="negative">−</option><option value="any">|v|</option></select>
+                            </span>
+                        </td>
+                        <td>
+                            <span class="bsrc-btn"><button type="button" class="learn-btn" data-learn="button">Learn</button></span>
+                            <span class="bsrc-axis"><button type="button" class="learn-btn" data-learn="btn-axis">Learn</button></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="btn-row">
+                <button type="button" id="save-mapping-btn" class="action-btn">Save Mapping</button>
+                <button type="button" id="reset-mapping-btn" class="action-btn danger">Reset to Defaults</button>
+            </div>
+
+        </form>
+    </div>
+
+</div><!-- .gp-columns -->

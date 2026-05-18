@@ -1,0 +1,270 @@
+/* Panel / Section Shared Styles — used in dashboard sections and standalone pages */
+
+.panel-page {
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 20px;
+}
+.page-header h1 {
+    flex: 1;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.15s;
+}
+.back-btn:hover {
+    background: #2a2a2a;
+    border-color: var(--border-light);
+}
+
+.page-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Telemetry grid — used in both standalone and dashboard */
+.telemetry-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+}
+
+.telemetry-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 14px 16px;
+    transition: border-color .15s;
+}
+.telemetry-card:hover { border-color: var(--border-light); }
+
+.telemetry-label {
+    display: block;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.telemetry-value-box {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    margin-bottom: 12px;
+}
+
+.telemetry-value {
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.telemetry-unit {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.telemetry-bar {
+    height: 6px;
+    background: var(--bg-input);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.telemetry-bar-fill {
+    height: 100%;
+    background: var(--green);
+    border-radius: 3px;
+    transition: width 0.3s ease, background 0.3s ease;
+}
+.telemetry-bar-fill.warning              { background: var(--yellow); }
+.telemetry-bar-fill.danger               { background: var(--red); }
+.telemetry-bar-fill.temp                 { background: var(--blue); }
+.telemetry-bar-fill.temp.warning         { background: var(--orange); }
+.telemetry-bar-fill.temp.danger          { background: var(--red); }
+
+.telemetry-chart-container {
+    position: relative;
+    height: 60px;
+    margin-top: 10px;
+}
+
+/* Standalone page telemetry: bigger values */
+.panel-page .telemetry-value { font-size: 36px; }
+.panel-page .telemetry-grid  { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+.panel-page .telemetry-card  { padding: 20px; border-radius: 10px; }
+.panel-page .telemetry-bar   { height: 8px; }
+
+/* Status pill — connection indicator in section headers */
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 12px;
+    border-radius: var(--r-pill);
+    font-family: CohereMono, Arial, ui-sans-serif, system-ui;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.28px;
+    border: 1px solid transparent;
+}
+.status-pill.disconnected {
+    background: rgba(239,68,68,0.08);
+    border-color: rgba(239,68,68,0.3);
+    color: var(--red-dim);
+}
+.status-pill.connected {
+    background: rgba(34,197,94,0.1);
+    border-color: rgba(34,197,94,0.35);
+    color: var(--green-dim);
+}
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+}
+.status-pill.connected .status-dot {
+    box-shadow: 0 0 5px currentColor;
+    animation: dot-pulse 1.5s infinite;
+}
+@keyframes dot-pulse {
+    0%,100% { opacity: 1; }
+    50%      { opacity: .6; }
+}
+
+/* Undervoltage card state */
+.undervoltage-card                     { transition: all 0.2s ease; }
+.undervoltage-card .undervoltage-text  { color: var(--green); }
+.undervoltage-card.active              { border-color: var(--red); background: rgba(204,0,0,.08); }
+.undervoltage-card.active .undervoltage-text { color: var(--red); }
+
+/* ─── Shared panel system ─── */
+.panel {
+    background: var(--cohere-border);
+    border: 1px solid var(--cohere-hairline);
+    border-radius: var(--r-sm);
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    color: var(--cohere-ink);
+}
+.panel:last-child { margin-bottom: 0; }
+
+.panel-title {
+    font-family: CohereMono, Arial, ui-sans-serif, system-ui;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.28px;
+    color: var(--cohere-muted);
+    margin-bottom: 12px;
+}
+
+.sub-title {
+    font-family: CohereMono, Arial, ui-sans-serif, system-ui;
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.28px;
+    color: var(--cohere-muted);
+    margin-top: 14px;
+    margin-bottom: 6px;
+}
+
+.btn-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+}
+
+/* ─── Action button (canonical) ─── */
+.action-btn {
+    padding: 7px 18px;
+    font-family: hashicorpSans, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', helvetica, arial;
+    font-size: 13px;
+    font-weight: 600;
+    background: var(--cohere-primary);
+    border: 1px solid var(--cohere-primary);
+    color: var(--cohere-canvas);
+    border-radius: var(--r-md);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background .15s, border-color .15s, color .15s;
+}
+.action-btn:hover:not(:disabled)  { background: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.85); }
+.action-btn:active:not(:disabled) { transform: scale(0.98); }
+.action-btn:disabled               { opacity: .45; cursor: not-allowed; }
+.action-btn.danger                 { background: transparent; border-color: var(--red); color: var(--red); }
+.action-btn.danger:hover:not(:disabled) { background: var(--red); color: #fff; }
+.action-btn.query-btn     { background: transparent; border-color: var(--cohere-action-blue); color: var(--cohere-action-blue); }
+.action-btn.query-btn:hover:not(:disabled)     { background: rgba(37,99,235,.1); }
+.action-btn.query-all-btn { background: transparent; border-color: var(--yellow); color: var(--yellow); }
+.action-btn.query-all-btn:hover:not(:disabled) { background: rgba(245,197,24,.1); }
+.action-btn.commit-btn    { background: transparent; border-color: var(--green-dim); color: var(--green-dim); }
+.action-btn.commit-btn:hover:not(:disabled)    { background: rgba(0,188,127,.12); }
+
+/* ─── SSH terminal ─── */
+.ssh-terminal-wrap {
+    background: #0d0d14;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+    height: calc(100vh - 220px);
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+}
+.ssh-xterm-container {
+    flex: 1;
+    padding: 6px;
+    overflow: hidden;
+}
+.ssh-xterm-container .xterm { height: 100%; }
+.ssh-xterm-container .xterm-viewport { background: transparent !important; }
+
+/* Placeholder for empty sections */
+.placeholder-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    text-align: center;
+    color: var(--text-muted);
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+}
+.placeholder-icon { font-size: 48px; margin-bottom: 16px; opacity: .4; }
+.placeholder-content p { font-size: 14px; max-width: 280px; line-height: 1.6; }
