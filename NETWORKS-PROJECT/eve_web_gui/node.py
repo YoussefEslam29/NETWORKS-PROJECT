@@ -11,7 +11,7 @@ from rcl_interfaces.msg import Log
 from eve_control_types.msg import Status
 
 from geometry_msgs.msg import Twist
-
+from std_msgs.msg import String
 from ament_index_python.packages import get_package_share_directory
 
 import threading
@@ -71,6 +71,9 @@ class EVEGUINode(Node):
         self.__cmd_vel_pub = self.create_publisher(Twist,'/cmd_vel',self.__qos_profile(1))
         self.__twist = Twist()
 
+        #taunt publisher
+        self.__taunt_pub = self.create_publisher(String, '/robot_taunt', self.__qos_profile(1))
+
         #background thread spin.
         self.__ros_thread = threading.Thread(target=self.__ros,daemon=True)
         self.__ros_thread.start()
@@ -102,7 +105,12 @@ class EVEGUINode(Node):
     #robot status callback.
     def __status_callback(self, msg: Status):
         socketio.emit('robot_status', {
-            'distance_cm': [int(msg.distance_cm[0]), int(msg.distance_cm[1])],
+            'distance_cm': [
+                int(msg.distance_cm[0]),
+                int(msg.distance_cm[1]),
+                int(msg.distance_cm[2]),
+                int(msg.distance_cm[3])
+            ],
             'euler': {
                 'x': float(msg.euler.x),
                 'y': float(msg.euler.y),
@@ -117,7 +125,7 @@ class EVEGUINode(Node):
         @socketio.on('connect')
         def handle_connect():
             emit('robot_status', {
-                'distance_cm': [0, 0],
+                'distance_cm': [0, 0, 0, 0],
                 'euler': {'x': 0.0, 'y': 0.0, 'z': 0.0}
             })
             emit('controller_status', {
@@ -240,6 +248,16 @@ class EVEGUINode(Node):
             self.__db_delete_profile(device_id, profile_name)
             profiles = self.__db_get_profiles(device_id) or ['Default']
             emit('profiles_list', {'profiles': profiles})
+
+        #robot taunt event
+        @socketio.on('trigger_taunt')
+        def handle_trigger_taunt(data):
+            button_id = data.get('button', '')
+            if button_id:
+                msg = String()
+                msg.data = button_id
+                self.__taunt_pub.publish(msg)
+                self.get_logger().info(f'Published taunt: {button_id}')
 
         #shutdown/restart socket event.
         @socketio.on('shutdown')

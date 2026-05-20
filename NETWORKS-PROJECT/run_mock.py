@@ -79,6 +79,13 @@ sys.modules['geometry_msgs.msg'] = mock_geometry_msg
 sys.modules['ament_index_python'] = mock_ament
 sys.modules['ament_index_python.packages'] = mock_ament_packages
 
+mock_std_msgs = MockModule()
+mock_std_msgs_msg = MockModule()
+mock_std_msgs_msg.String = lambda: type('String', (), {'data': ''})()
+
+sys.modules['std_msgs'] = mock_std_msgs
+sys.modules['std_msgs.msg'] = mock_std_msgs_msg
+
 from eve_web_gui.node import main
 if __name__ == "__main__":
     print("Starting mock EVE Web GUI (without ROS 2)...")

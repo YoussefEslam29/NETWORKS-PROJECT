@@ -98,7 +98,10 @@
     // ── Voice taunt placeholders ─────────────────────────────────────────────
     function _triggerTaunt(buttonName) {
         console.log('[EVE] Voice taunt triggered: ' + buttonName);
-        // TODO: Add actual audio playback here when filenames are provided
+        var sock = _getSocket();
+        if (sock && !GamepadManager.noEmit) {
+            sock.emit('trigger_taunt', { button: buttonName });
+        }
     }
 
     function _checkShapeButtons(buttons) {

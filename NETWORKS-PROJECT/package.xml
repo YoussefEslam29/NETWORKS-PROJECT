@@ -13,6 +13,8 @@
   <depend>python3-numpy</depend>
   <depend>python3-websockets</depend>
   <depend>python3-pygame</depend>
+  <depend>eve_control_types</depend>
+  <depend>geometry_msgs</depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

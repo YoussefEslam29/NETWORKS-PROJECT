@@ -75,13 +75,17 @@
         var ex = document.getElementById('euler-x');
         var ey = document.getElementById('euler-y');
         var ez = document.getElementById('euler-z');
+        var df = document.getElementById('diag-front-val');
+        var db = document.getElementById('diag-back-val');
         var dl = document.getElementById('diag-left-val');
         var dr = document.getElementById('diag-right-val');
         if (ex) ex.textContent = data.euler.x.toFixed(2) + '°';
         if (ey) ey.textContent = data.euler.y.toFixed(2) + '°';
         if (ez) ez.textContent = data.euler.z.toFixed(2) + '°';
-        if (dl) dl.textContent = data.distance_cm[0] + ' cm';
-        if (dr) dr.textContent = data.distance_cm[1] + ' cm';
+        if (df && data.distance_cm.length > 0) df.textContent = data.distance_cm[0] + ' cm';
+        if (db && data.distance_cm.length > 1) db.textContent = data.distance_cm[1] + ' cm';
+        if (dl && data.distance_cm.length > 2) dl.textContent = data.distance_cm[2] + ' cm';
+        if (dr && data.distance_cm.length > 3) dr.textContent = data.distance_cm[3] + ' cm';
     });
 
     socket.on('disconnect', function() {
