@@ -8,7 +8,7 @@ from flask import request
 from flask_socketio import emit
 from rcl_interfaces.msg import Log
 
-from eve_control_types.msg import Status
+from custom_msgs.msg import Status
 
 from geometry_msgs.msg import Twist
 from std_msgs.msg import String
@@ -107,9 +107,7 @@ class EVEGUINode(Node):
         socketio.emit('robot_status', {
             'distance_cm': [
                 int(msg.distance_cm[0]),
-                int(msg.distance_cm[1]),
-                int(msg.distance_cm[2]),
-                int(msg.distance_cm[3])
+                int(msg.distance_cm[1])
             ],
             'euler': {
                 'x': float(msg.euler.x),
@@ -125,7 +123,7 @@ class EVEGUINode(Node):
         @socketio.on('connect')
         def handle_connect():
             emit('robot_status', {
-                'distance_cm': [0, 0, 0, 0],
+                'distance_cm': [0, 0],
                 'euler': {'x': 0.0, 'y': 0.0, 'z': 0.0}
             })
             emit('controller_status', {

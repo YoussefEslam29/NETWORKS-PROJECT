@@ -49,9 +49,9 @@ mock_rcl_interfaces = MockModule()
 mock_rcl_interfaces_msg = MockModule()
 mock_rcl_interfaces_msg.Log = MockModule()
 
-mock_eve_control = MockModule()
-mock_eve_control_msg = MockModule()
-mock_eve_control_msg.Status = MockModule()
+mock_custom_msgs = MockModule()
+mock_custom_msgs_msg = MockModule()
+mock_custom_msgs_msg.Status = MockModule()
 
 mock_geometry = MockModule()
 mock_geometry_msg = MockModule()
@@ -70,8 +70,8 @@ sys.modules['rclpy.logging'] = mock_rclpy.logging
 sys.modules['rcl_interfaces'] = mock_rcl_interfaces
 sys.modules['rcl_interfaces.msg'] = mock_rcl_interfaces_msg
 
-sys.modules['eve_control_types'] = mock_eve_control
-sys.modules['eve_control_types.msg'] = mock_eve_control_msg
+sys.modules['custom_msgs'] = mock_custom_msgs
+sys.modules['custom_msgs.msg'] = mock_custom_msgs_msg
 
 sys.modules['geometry_msgs'] = mock_geometry
 sys.modules['geometry_msgs.msg'] = mock_geometry_msg

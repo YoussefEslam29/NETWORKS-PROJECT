@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/static/css/panels.css">
     <link rel="stylesheet" href="/static/css/gamepad.css">
     <script src="/static/js/vendor/socket.io.min.js"></script>
+    <script src="/static/js/vendor/jsQR.js"></script>
     <script src="/static/js/script.js" defer></script>
     <script src="/static/js/gamepad.js" defer></script>
     <script src="/static/js/gamepad_diag.js" defer></script>
@@ -15,6 +16,21 @@
 <body>
 
     <div id="main-container">
+
+        <!-- QR Code Saved Button (top-right corner) -->
+        <button id="qr-open-btn" class="qr-open-btn" title="Saved QR Codes">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7"/>
+                <rect x="14" y="3" width="7" height="7"/>
+                <rect x="3" y="14" width="7" height="7"/>
+                <rect x="14" y="14" width="3" height="3"/>
+                <line x1="21" y1="14" x2="21" y2="17"/>
+                <line x1="14" y1="21" x2="17" y2="21"/>
+                <line x1="21" y1="21" x2="21" y2="21.01"/>
+            </svg>
+            <span class="qr-btn-label">QR Codes</span>
+            <span id="qr-badge" class="qr-badge" style="display:none;">0</span>
+        </button>
 
         <!-- Camera Feed (single robot stream) -->
         <div id="camera-grid">
@@ -137,6 +153,22 @@
             </div>
         </div>
 
+    </div>
+
+    <!-- QR Code Saved List Overlay -->
+    <div id="qrcode-overlay">
+        <div class="qrcode-panel">
+            <div class="qrcode-panel-header">
+                <span class="qrcode-panel-title">&#128247; Saved QR Codes</span>
+                <div class="qrcode-panel-actions">
+                    <button id="qr-clear-all" class="qr-clear-btn" title="Clear All">Clear All</button>
+                    <button id="qr-panel-close" class="qrcode-panel-close" title="Close">&times;</button>
+                </div>
+            </div>
+            <div class="qrcode-panel-body">
+                <div id="qr-list"></div>
+            </div>
+        </div>
     </div>
 
     <!-- Notification -->
